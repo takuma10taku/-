@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LA活動支援アプリ</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <button class="home-btn" onclick="showScreen('timeline')">🏠 ホーム</button>
+      <h1>LA活動支援専用WEBアプリ</h1>
+      <div class="actions">
+        <button id="postTab" class="active" onclick="showScreen('timeline')">活動記録を投稿する</button>
+        <button id="adminTab" onclick="showScreen('login')">管理画面にログイン</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="timelineScreen" class="screen">
+        <form id="postForm" class="card">
+          <h2>活動記録投稿</h2>
+
+          <details open>
+            <summary>セクション1：基本情報</summary>
+            <div class="section basic">
+              <label>氏名<input name="name" required /></label>
+              <label>所属学部
+                <select name="faculty" required>
+                  <option value="">選択してください</option>
+                  <option>工学部</option><option>文学部</option><option>経済学部</option><option>その他</option>
+                </select>
+              </label>
+              <label>担当授業名<input name="course" maxlength="30" required /></label>
+              <label>担当教員名<input name="teacher" maxlength="20" required /></label>
+              <label>活動日<input type="date" name="date" required /></label>
+              <label>開始時間<input type="time" step="1800" name="start" required /></label>
+              <label>終了時間<input type="time" step="1800" name="end" required /></label>
+            </div>
+          </details>
+
+          <details>
+            <summary>セクション2：活動内容</summary>
+            <div class="section activity">
+              <label>活動カテゴリ
+                <select name="category" required>
+                  <option>授業補助</option><option>学生対応</option><option>教材準備</option><option>出欠補助</option><option>ICT支援</option><option>その他</option>
+                </select>
+              </label>
+              <label>活動内容詳細<textarea name="detail" maxlength="300" required></textarea></label>
+              <label>工夫した点<textarea name="idea" maxlength="200"></textarea></label>
+              <label>課題点・改善案<textarea name="issue" maxlength="200"></textarea></label>
+              <label>画像添付（最大3枚）<input type="file" multiple accept="image/*" /></label>
+            </div>
+          </details>
+
+          <details>
+            <summary>セクション3：評価・共有</summary>
+            <div class="section eval">
+              <label>公開範囲
+                <select name="visibility"><option>全体公開</option><option>同授業のみ</option><option>非公開（教員のみ閲覧）</option></select>
+              </label>
+              <label>いいね機能
+                <select name="likesEnabled"><option>有効</option><option>無効</option></select>
+              </label>
+              <label>自己評価
+                <select name="selfRate"><option>1</option><option>2</option><option>3</option><option selected>4</option><option>5</option></select>
+              </label>
+              <label>次回への目標<input name="goal" maxlength="100" /></label>
+            </div>
+          </details>
+
+          <button type="submit" class="submit">投稿する</button>
+        </form>
+
+        <section>
+          <h2>タイムライン</h2>
+          <div id="timeline" class="timeline"></div>
+        </section>
+      </section>
+
+      <section id="loginScreen" class="screen hidden card">
+        <h2>管理画面ログイン</h2>
+        <label>ID<input id="loginId" /></label>
+        <label>パスワード<input id="loginPw" type="password" /></label>
+        <button onclick="loginAdmin()">ログイン</button>
+        <p id="loginMsg"></p>
+      </section>
+
+      <section id="adminScreen" class="screen hidden">
+        <div class="admin-top">
+          <h2>管理画面</h2>
+          <button onclick="downloadCsv()">CSVダウンロード</button>
+        </div>
+        <table>
+          <thead><tr><th>活動日</th><th>学生氏名</th><th>所属</th><th>授業</th><th>カテゴリ</th><th>活動内容</th><th>いいね</th><th>ステータス</th></tr></thead>
+          <tbody id="adminTable"></tbody>
+        </table>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
